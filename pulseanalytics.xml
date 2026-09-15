@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="system" method="upgrade">
+	<name>plg_system_pulseanalytics</name>
+	<author>Ciphera</author>
+	<creationDate>2026-09</creationDate>
+	<copyright>(C) 2026 Ciphera BV</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>support@ciphera.net</authorEmail>
+	<authorUrl>https://ciphera.net</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_SYSTEM_PULSEANALYTICS_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\System\PulseAnalytics</namespace>
+	<files>
+		<folder plugin="pulseanalytics">services</folder>
+		<folder>src</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/plg_system_pulseanalytics.ini</language>
+		<language tag="en-GB">language/en-GB/plg_system_pulseanalytics.sys.ini</language>
+	</languages>
+	<updateservers>
+		<server type="extension" priority="1" name="Pulse Analytics">https://pulse.ciphera.net/joomla/pulse-update.xml</server>
+	</updateservers>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="domain"
+					type="text"
+					label="PLG_SYSTEM_PULSEANALYTICS_FIELD_DOMAIN"
+					description="PLG_SYSTEM_PULSEANALYTICS_FIELD_DOMAIN_DESC"
+					filter="string"
+					size="40"
+				/>
+				<field
+					name="companion"
+					type="radio"
+					label="PLG_SYSTEM_PULSEANALYTICS_FIELD_COMPANION"
+					description="PLG_SYSTEM_PULSEANALYTICS_FIELD_COMPANION_DESC"
+					layout="joomla.form.field.radio.switcher"
+					default="0"
+					filter="integer"
+					>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+					name="api"
+					type="text"
+					label="PLG_SYSTEM_PULSEANALYTICS_FIELD_API"
+					description="PLG_SYSTEM_PULSEANALYTICS_FIELD_API_DESC"
+					filter="string"
+					size="40"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

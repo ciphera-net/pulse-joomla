@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Joomla update server manifest.
+
+  🔴 The JED has REQUIRED an update server of every extension submitted since
+  10 January 2017. This file is what the <updateservers> element in
+  pulseanalytics.xml points at, and it must be hosted at exactly that URL:
+
+      https://pulse.ciphera.net/joomla/pulse-update.xml
+
+  It is a static file. There is no backend, nothing to run, and nothing to
+  authenticate — but until it is actually SERVING, the manifest names a URL that
+  404s, every installed site silently reports "no updates available" forever,
+  and a JED reviewer will fail the listing on it.
+
+  ⚠️ `targetplatform` lives HERE, not in the install manifest. The install
+  manifest has no compatibility gate at all: Joomla will happily install this
+  extension on any version. This regex is what actually stops Joomla offering
+  the update to a core it was not tested on, so widen it only after running
+  ./scripts/verify.sh against the new version.
+-->
+<updates>
+	<update>
+		<name>Pulse Analytics</name>
+		<description>Privacy-first web analytics. No cookies, no personal data, under 3 KB.</description>
+		<element>pulseanalytics</element>
+		<type>plugin</type>
+		<folder>system</folder>
+		<client>0</client>
+		<version>1.0.0</version>
+		<infourl title="Pulse Analytics">https://pulse.ciphera.net</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://pulse.ciphera.net/joomla/plg_system_pulseanalytics-1.0.0.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Ciphera</maintainer>
+		<maintainerurl>https://ciphera.net</maintainerurl>
+		<targetplatform name="joomla" version="5\.[0-9]+|6\.[0-9]+" />
+		<php_minimum>8.1</php_minimum>
+	</update>
+</updates>
