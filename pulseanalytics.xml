@@ -19,7 +19,7 @@
 		<language tag="en-GB">language/en-GB/plg_system_pulseanalytics.sys.ini</language>
 	</languages>
 	<updateservers>
-		<server type="extension" priority="1" name="Pulse Analytics">https://pulse.ciphera.net/joomla/pulse-update.xml</server>
+		<server type="extension" priority="1" name="Pulse Analytics">https://cdn.ciphera.net/joomla/pulse-update.xml</server>
 	</updateservers>
 	<config>
 		<fields name="params">

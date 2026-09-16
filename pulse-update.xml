@@ -6,12 +6,25 @@
   10 January 2017. This file is what the <updateservers> element in
   pulseanalytics.xml points at, and it must be hosted at exactly that URL:
 
-      https://pulse.ciphera.net/joomla/pulse-update.xml
+      https://cdn.ciphera.net/joomla/pulse-update.xml
 
   It is a static file. There is no backend, nothing to run, and nothing to
   authenticate — but until it is actually SERVING, the manifest names a URL that
   404s, every installed site silently reports "no updates available" forever,
   and a JED reviewer will fail the listing on it.
+
+  🔁 HOST CHANGED 16-09-2026: pulse.ciphera.net -> cdn.ciphera.net.
+  pulse.ciphera.net is a Bunny pull zone in front of the Next.js app, so
+  /joomla/* was caught by the app and 307'd to /login, then answered 200 with
+  HTML. A status-code check passed and Joomla's updater would have parsed a
+  login page as update XML and reported "no updates available" — identical to
+  being up to date. cdn.ciphera.net is storage-backed with no app in the path.
+
+  ⚠️ THE ZONE CACHES EVERYTHING FOR A YEAR (edge rule "Cache all assets for 1
+  year", pattern *). An edge rule added 16-09-2026 gives */joomla/*.xml a 300s
+  TTL instead; without it a release would be invisible to every Joomla site
+  until the TTL lapsed. The zip is fine on the 1-year rule because its filename
+  carries the version. Purge this file on every release anyway.
 
   ⚠️ `targetplatform` lives HERE, not in the install manifest. The install
   manifest has no compatibility gate at all: Joomla will happily install this
@@ -30,7 +43,7 @@
 		<version>1.0.0</version>
 		<infourl title="Pulse Analytics">https://pulse.ciphera.net</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://pulse.ciphera.net/joomla/plg_system_pulseanalytics-1.0.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://cdn.ciphera.net/joomla/plg_system_pulseanalytics-1.0.0.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>

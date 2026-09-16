@@ -64,13 +64,64 @@ Only a rendered page shows which you got.
 - ⚠️ **The "7 MB upload cap" is unverified.** No JED page states a numeric
   package size limit. Treat it as unknown rather than as a constraint.
 
+## Where these two files live — and why not on `pulse.ciphera.net`
+
+Both are static and served from **`cdn.ciphera.net/joomla/`** (Bunny Edge
+Storage zone `ciphera-cdn-assets`, pull zone **5733677**, dual-written to the
+Exoscale SOS backup like every other CDN asset):
+
+| | URL |
+|---|---|
+| update manifest | `https://cdn.ciphera.net/joomla/pulse-update.xml` |
+| install package | `https://cdn.ciphera.net/joomla/plg_system_pulseanalytics-<version>.zip` |
+
+🔴 **`pulse.ciphera.net/joomla/*` CANNOT serve these and never could.** That
+hostname is a Bunny pull zone in front of the Next.js app, so the path reached
+the app, 307'd to `/login?returnTo=…` and answered **200 with HTML**. A
+status-code check passes; Joomla's updater would parse a login page as update
+XML and report "no updates available", which is indistinguishable from being up
+to date. Serving it there would mean a `public/` file plus a `middleware.ts`
+`PUBLIC_ROUTES` entry in pulse-frontend, i.e. an app deploy for a static file.
+
+⚠️ **The URL is baked into every install's `#__update_sites` row**, so it is
+expensive to change after the first release. It was chosen once, deliberately,
+for a host with no application in the path.
+
+### 🔴 The zone caches everything for a year — the manifest needs an exception
+
+`ciphera-assets` carries an edge rule *"Cache all assets for 1 year (pure image
+CDN)"* on pattern `*`, and `IgnoreQueryStrings: True` so a cache-busting query
+would not help either. A release would have been invisible to every Joomla site
+until the TTL lapsed. Two edge rules added 16-09-2026, both on `*/joomla/*.xml`:
+
+| ActionType | Parameters | Effect |
+|---|---|---|
+| **3** (Override Cache Time) | `300` | the EDGE re-fetches every 5 min |
+| **15** (Set Response Header) | `Cache-Control` / `public, max-age=300` | what downstream caches are told |
+
+The precedent for coexisting with the zone-wide `*` rule is the ACME rule
+(`*/.well-known/acme-challenge/*` → 0), which demonstrably works.
+
+⚠️ **The zip is deliberately left on the 1-year rule** — its filename carries the
+version, so a new release is a new URL and there is nothing to invalidate.
+
+**Purge the manifest on every release regardless**, and verify by BODY:
+
+```bash
+source scripts/cdn-env.sh
+curl -X POST "https://api.bunny.net/purge?url=https://cdn.ciphera.net/joomla/pulse-update.xml&async=false" \
+  -H "AccessKey: $BUNNY_API_KEY"
+curl -sS https://cdn.ciphera.net/joomla/pulse-update.xml | python3 -c \
+  "import sys,xml.etree.ElementTree as ET;u=ET.parse(sys.stdin).getroot().find('update');print(u.find('version').text, u.find('downloads/downloadurl').text)"
+```
+
 ## JED submission
 
 1. **Register on `extensions.joomla.org`** and confirm the email, then use
    *Submit extension* from your profile.
 2. 🔴 **`<updateservers>` is mandatory** for every extension submitted since
    **10 January 2017**. The manifest points at
-   `https://pulse.ciphera.net/joomla/pulse-update.xml`, and **that file must
+   `https://cdn.ciphera.net/joomla/pulse-update.xml`, and **that file must
    actually be serving before submitting** — `pulse-update.xml` in this
    repository is it. It is a static file with no backend, but until it is
    deployed the manifest names a URL that 404s, every installed site reports
@@ -144,9 +195,9 @@ Joomla stores in `#__extensions`, and the string passed to
 1. Bump `<version>` in `pulseanalytics.xml`.
 2. Run `./scripts/verify.sh 6.1.3` and `HTTP_PORT=18081 ./scripts/verify.sh 5.4.8`.
 3. Build the zip (above).
-4. Upload the zip somewhere public and update `pulse-update.xml` — its
-   `<version>` and `<downloadurl>` — then deploy that file to
-   `https://pulse.ciphera.net/joomla/pulse-update.xml`.
+4. Upload the zip and update `pulse-update.xml` — its `<version>` and
+   `<downloadurl>` — then deploy both to `cdn.ciphera.net/joomla/`
+   (see "Where these two files live" below). **Purge the XML at the edge.**
 5. Tag: `git tag -a v1.0.0 -m "Release 1.0.0" && git push origin v1.0.0`.
 6. First release only: submit to the JED.
 
