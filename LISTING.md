@@ -3,9 +3,31 @@
 The text the Joomla Extensions Directory submission form gets. The form has no
 version control; this file does. Keep it in step with the extension.
 
-**Status:** not yet submitted. `extensions.joomla.org` needs an account and
-returns **200 with zero bytes** to a non-browser client, so the submission is a
-browser job.
+**Status:** 🟢 **SUBMITTED 16-09-2026 — extension id `17699`, state `Pending`.**
+Confirmation: *"Listing Submission Received. Your submission has been
+successfully received."* Visible under Profile → Extensions as Pending / Free.
+
+⚠️ `extensions.joomla.org` returns **200 with zero bytes** to curl — it
+fingerprints non-browser clients. A real browser loads it fine, so the account
+work and the submission were both automated with Playwright; "curl gets nothing"
+is a fact about curl, not about whether the site can be driven.
+
+🔑 **The account is gated before it can submit.** The Submit button reads
+*"Submit extension - Complete the Account profile"* and is inert until Profile →
+**Account** has a **Developer Name**. That is the entire profile — one field. Set
+to `Ciphera`, matching `<author>` in the manifest and the drupal.org maintainer.
+
+🔴 **Three file inputs, in DOM order: [0] Extensions File (the install zip),
+[1] Logo, [2] Images.** Putting the logo in slot [0] fails with BOTH
+*"'Extensions File' is required"* AND *"'Logo' is required"* — one wrong slot,
+two errors, neither naming the cause.
+
+⚠️ **A Funding Choices consent overlay (`.fc-consent-root`) intercepts the Save
+click** and must be dismissed first.
+
+**Logo:** `pulse-framer/listing/out/joomla-jed.png` — the JED wants **1200×525
+(16:7)**, a shape no other store uses. `listing/render.mjs` has a `jed` format
+for it.
 
 ## Prerequisites, all met as of 16-09-2026
 
@@ -15,6 +37,7 @@ browser job.
 | `<updateservers>` — mandatory since 10 Jan 2017 | ✅ `https://cdn.ciphera.net/joomla/pulse-update.xml`, **serving and verified by body** |
 | Download URL not behind a login or paywall | ✅ `https://cdn.ciphera.net/joomla/plg_system_pulseanalytics-1.0.0.zip` |
 | Verified on supported cores | ✅ Joomla 6.1.3 and 5.4.8, five cases each |
+| **JED Checker** | ✅ run against the PUBLISHED zip — see below |
 | Name contains no Joomla mark | ✅ so no Extension Name Request ticket — approval is inline in the form |
 
 ## Listing fields
@@ -70,6 +93,49 @@ tables, no Composer dependencies, no external libraries.
 Source `https://github.com/ciphera-net/pulse-joomla`
 
 **Download:** `https://cdn.ciphera.net/joomla/plg_system_pulseanalytics-1.0.0.zip`
+
+## JED Checker — run, and it found a bug in JED Checker
+
+The submission form's required checkbox bundles three claims, one of which is
+*"The extension has been verified with JED Checker"*. It was, against the
+**published** artefact fetched from the CDN (sha `ae0924929fc280b5da95…`).
+
+**Result: clean.** 13 of 14 rules pass outright; the 14th failure is not ours.
+
+🔴 **`XmlLicenseRule` in the unreleased 3.0.0 `develop` build reads
+`$xml->licence` — British spelling.** Joomla's manifest schema uses
+`<license>`, so the rule fails every schema-correct extension, **including JED
+Checker's own `jedchecker.xml`**. Released **2.4.4** reads `$xml->license`
+correctly, so the spelling flipped in the refactor. Proven three ways: Joomla
+core's manifests all use `<license>`; adding a `<licence>` element takes the run
+to **0 errors of 14**; and 2.4.4's exact conditions applied to our manifest
+return TRUE on both checks. Reported upstream as
+[jedchecker#278](https://github.com/joomla-extensions/jedchecker/issues/278).
+
+⚠️ **The JED's own submission confirmation says reviewers use JED Checker.** If
+they run `develop`, expect this false positive and point them at the issue.
+
+### 🔴 How to run it, because the admin UI does not work in a local harness
+
+Three false greens came before a real result, each caught only by a **control** —
+the same package with its `<license>` tag deleted, which MUST fail:
+
+1. All 14 ✓ — but the upload never landed; those ticks are the page's default
+   state. The control showed 14/14 ✓ too, which is how the lie was caught.
+2. The built package 404s its own JS (`jedchecker.js` requested, `script.js`
+   shipped), so the upload button is never wired.
+3. Under `php -S` every JS module fails (`MIME type text/html`) and the form
+   action doubles to `/administrator/administrator/…`. The admin UI is unusable.
+
+So bypass it and drive the rule classes directly. `cli/pulse-jedcheck.php` in the
+harness does this: `RuleDiscovery::getRules()` → `new $rule($folder)` →
+`check()` → `getReport()->getData()`.
+
+⚠️ `getData()` returns `['count' => …, 'issues' => …]` — **two keys**. Counting
+the top-level array gives every rule `items=2` and no failures ever. Read
+`$data['count']['error']`.
+
+🔑 **Never trust a checker run that has not been shown able to fail.**
 
 ## 🔴 The disclaimer is verbatim and non-negotiable
 
