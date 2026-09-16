@@ -80,8 +80,14 @@ divergence is deliberate and unavoidable, not drift.
 
 ## Trademark
 
-This product is not affiliated with or endorsed by The Joomla! Project™. Any
-products and services provided through this site are not supported or
-warrantied by The Joomla! Project or Open Source Matters, Inc. Use of the
-Joomla!® name, symbol, logo and related trademarks is permitted under a limited
-license granted by Open Source Matters, Inc.
+<!-- 🔴 VERBATIM from tm.joomla.org/disclaimers.html. The only substitution
+     permitted is the business name for "[Business name]". Corrected 16-09-2026:
+     this previously opened "This product is not affiliated…", which is a
+     PARAPHRASE of "[Business name] and this site is not affiliated…" — and
+     RELEASING.md said in the same breath not to paraphrase it. Do not reword. -->
+
+Ciphera BV and this site is not affiliated with or endorsed by The Joomla!
+Project™. Any products and services provided through this site are not
+supported or warrantied by The Joomla! Project or Open Source Matters, Inc. Use
+of the Joomla!® name, symbol, logo and related trademarks is permitted under a
+limited license granted by Open Source Matters, Inc.

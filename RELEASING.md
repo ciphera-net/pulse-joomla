@@ -92,15 +92,30 @@ for a host with no application in the path.
 `ciphera-assets` carries an edge rule *"Cache all assets for 1 year (pure image
 CDN)"* on pattern `*`, and `IgnoreQueryStrings: True` so a cache-busting query
 would not help either. A release would have been invisible to every Joomla site
-until the TTL lapsed. Two edge rules added 16-09-2026, both on `*/joomla/*.xml`:
+until the TTL lapsed.
 
-| ActionType | Parameters | Effect |
-|---|---|---|
-| **3** (Override Cache Time) | `300` | the EDGE re-fetches every 5 min |
-| **15** (Set Response Header) | `Cache-Control` / `public, max-age=300` | what downstream caches are told |
+**One edge rule added 16-09-2026** — ActionType **3** (Override Cache Time),
+parameter `300`, pattern `*/joomla/*.xml`. It coexists with the zone-wide `*`
+rule the same way the ACME rule does (`*/.well-known/acme-challenge/*` → 0).
 
-The precedent for coexisting with the zone-wide `*` rule is the ACME rule
-(`*/.well-known/acme-challenge/*` → 0), which demonstrably works.
+✅ **Proven, not assumed.** A throwaway `joomla/cache-probe.xml` was written,
+seeded, then **changed at origin with no purge**: the edge served the new bytes
+**within 30 s**. The probe was deleted afterwards (404 confirmed).
+
+🔴 **A SECOND RULE WAS TRIED AND REMOVED — do not re-add it.** ActionType 15
+(Set Response Header) setting `Cache-Control: public, max-age=300` had **no
+effect**: measured 10 times over 5 minutes, the response stayed
+`public, max-age=2592000`. The zone-level **`CacheControlMaxAgeOverride`
+(2592000) wins over a Set-Response-Header edge rule**, and the rule was deleted
+rather than left in place looking like a control it was not.
+
+⚠️ **So the served `Cache-Control` is 30 days and cannot be changed per-path**
+without altering the whole zone. This is tolerable, not ideal: Joomla's updater
+uses `HttpFactory::getHttp()`, which implements **no response cache**, so a
+Joomla site re-fetches and gets whatever the edge holds — and the edge is
+correct. The 30-day header only bites behind a shared forward proxy between the
+site and Bunny. ⚠️ Do not "fix" it with `CacheControlBrowserMaxAgeOverride`:
+that is zone-level too and would change every image on `cdn.ciphera.net`.
 
 ⚠️ **The zip is deliberately left on the 1-year rule** — its filename carries the
 version, so a new release is a new URL and there is nothing to invalidate.
