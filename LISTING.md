@@ -46,12 +46,12 @@ for it.
 
 **Short description (under 200 characters):**
 
-> Privacy-first web analytics. No cookies, no personal data, and the script it adds to your pages is under 3 KB.
+> Privacy-first web analytics. No cookies, no IP addresses stored, and the script it adds to your pages is under 3 KB.
 
 **Description:**
 
 Pulse Analytics adds privacy-first web analytics to a Joomla site with one
-system plugin. It sets no cookies, stores no personal data, and the script it
+system plugin. It sets no cookies, never stores IP addresses, and the script it
 adds to your pages is under 3 KB — so it needs no consent banner of its own.
 
 How it works

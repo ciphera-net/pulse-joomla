@@ -1,7 +1,7 @@
 # Pulse Analytics for Joomla
 
 Privacy-first analytics for a Joomla site, in one system plugin. No cookies, no
-personal data, and the script it adds to your pages is under 3 KB.
+IP addresses stored, and the script it adds to your pages is under 3 KB.
 
 [Pulse Analytics](https://pulse.ciphera.net) is built by
 [Ciphera](https://ciphera.net), a company in Belgium, and hosted in Europe.

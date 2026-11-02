@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>support@ciphera.net</authorEmail>
 	<authorUrl>https://ciphera.net</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<description>PLG_SYSTEM_PULSEANALYTICS_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\System\PulseAnalytics</namespace>
 	<files>
