@@ -3,9 +3,12 @@
 The text the Joomla Extensions Directory submission form gets. The form has no
 version control; this file does. Keep it in step with the extension.
 
-**Status:** 🟢 **SUBMITTED 16-09-2026 — extension id `17699`, state `Pending`.**
-Confirmation: *"Listing Submission Received. Your submission has been
-successfully received."* Visible under Profile → Extensions as Pending / Free.
+**Status:** 🟢 **LIVE. Extension id `17699`, approved about 18-09-2026.**
+Submitted 16-09-2026. Every record said `Pending` until 09-11-2026, when the
+listing was found live. On 09-11-2026 it was updated to version 1.0.1 with the
+description below, and an edit to an approved JED listing is public at once.
+The submission confirmation read: *"Listing Submission Received. Your
+submission has been successfully received."*
 
 ⚠️ `extensions.joomla.org` returns **200 with zero bytes** to curl — it
 fingerprints non-browser clients. A real browser loads it fine, so the account
@@ -46,42 +49,34 @@ for it.
 
 **Short description (under 200 characters):**
 
-> Privacy-first web analytics. No cookies, no IP addresses stored, and the script it adds to your pages is under 3 KB.
+> Pulse Analytics counts visitors without cookies or stored IP addresses. The script this plugin adds to your pages is under 3 KB.
 
-**Description:**
+**Description (posted on the JED 09-11-2026, with version 1.0.1):**
 
-Pulse Analytics adds privacy-first web analytics to a Joomla site with one
-system plugin. It sets no cookies, never stores IP addresses, and the script it
-adds to your pages is under 3 KB — so it needs no consent banner of its own.
+Pulse Analytics adds privacy-first web analytics to a Joomla site with one system plugin. It sets no cookies and never stores IP addresses, so it needs no consent banner of its own. The script it adds to your pages is under 3 KB.
 
 How it works
 
-1. Install the plugin, then go to System → Plugins, find *Pulse Analytics* and
-   enable it. A freshly installed plugin is disabled; "I installed it and
-   nothing happened" is almost always this.
-2. Enter the domain your site is registered under in Pulse, or leave it empty
-   and the tracker uses the browser's own hostname — correct for a site served
-   on one domain.
+1. Install the plugin, then go to System → Plugins, find Pulse Analytics and enable it. A freshly installed plugin is disabled; "I installed it and nothing happened" is almost always this.
+2. Enter the domain your site is registered under in Pulse. If you leave it empty, the tracker uses the browser's own hostname, which is right for a site served on one domain.
 3. Publish. Your dashboard at pulse.ciphera.net shows visitors as they arrive.
 
 What it measures
 
-Pageviews, referrers, countries, devices, time on page and scroll depth, plus
-the goals, funnels and campaigns you set up, in one dashboard hosted in Europe.
-Visitors whose browser sends Do Not Track or Global Privacy Control are not
-counted at all. Administration pages are never tagged.
+Pulse counts pageviews, referrers, countries, devices, time on page and scroll depth, plus the goals, funnels and campaigns you set up, in one dashboard hosted in Europe. It does not count visitors whose browser sends Do Not Track or Global Privacy Control, and the plugin never tags administration pages.
 
 Options
 
-A companion script for clicks, copies and form submits, loaded as a second
-request so you only pay for it if you want it; and a custom API origin, if you
-route events through your own proxy.
+You can add a companion script for clicks, copies and form submits. It loads as a second request, so you only pay for it if you want it. You can also set a custom API origin if you route events through your own proxy.
 
 You need
 
-Joomla 5 or 6, PHP 8.1 or later, and a Pulse Analytics account with a site
-registered for the same domain. The free plan is enough to start. No database
-tables, no Composer dependencies, no external libraries.
+Joomla 5 or 6, PHP 8.1 or later, and a Pulse Analytics account with a site registered for the same domain. The free plan is enough to start. The plugin adds no database tables and needs no Composer dependencies or external libraries.
+
+The description posted on the JED ends with one more paragraph, the trademark
+disclaimer from the section "The disclaimer is verbatim and non-negotiable"
+below, copied verbatim. It is left out of the block above only so the text is
+not stored twice.
 
 **Licence:** GNU General Public License version 2 or later
 
@@ -92,7 +87,7 @@ tables, no Composer dependencies, no external libraries.
 `https://pulse.ciphera.net/demo` · Support `support@ciphera.net` ·
 Source `https://github.com/ciphera-net/pulse-joomla`
 
-**Download:** `https://cdn.ciphera.net/joomla/plg_system_pulseanalytics-1.0.0.zip`
+**Download:** `https://cdn.ciphera.net/joomla/plg_system_pulseanalytics-1.0.1.zip`
 
 ## JED Checker — run, and it found a bug in JED Checker
 
@@ -165,6 +160,9 @@ text, like every other platform in this queue.
 
 ## After submission
 
+- 🟢 **Approved about 18-09-2026** (found live 09-11-2026). **An edit to an
+  approved listing goes live at once**, with no new review, so the text above
+  is public the moment it is saved on the JED.
 - **No published SLA.** Review is by volunteers.
 - 🔴 **60 days** from submission to correct anything flagged, or the listing is
   rejected — and a correction re-queues you for another pass, also untimed.
