@@ -213,6 +213,23 @@ Joomla stores in `#__extensions`, and the string passed to
 4. Upload the zip and update `pulse-update.xml` — its `<version>` and
    `<downloadurl>` — then deploy both to `cdn.ciphera.net/joomla/`
    (see "Where these two files live" below). **Purge the XML at the edge.**
+   ⚠️ `scripts/cdn-upload.sh` uploads image extensions only and skips a `.zip`
+   or `.xml` without a word, so write both legs by hand, zip FIRST so the
+   manifest never names a file the CDN lacks, from **bash** (sourced from zsh,
+   `cdn-env.sh` leaves every variable empty):
+   ```bash
+   source scripts/cdn-env.sh   # workspace root, in bash
+   for f in plg_system_pulseanalytics-<v>.zip pulse-update.xml; do
+     ct=$([ "${f##*.}" = zip ] && echo application/zip || echo application/xml)
+     sha=$(shasum -a 256 "$f" | awk '{print toupper($1)}')
+     curl -fsS -X PUT "https://$BUNNY_STORAGE_HOST/$BUNNY_STORAGE_ZONE/joomla/$f" \
+       -H "AccessKey: $BUNNY_STORAGE_PASSWORD" -H "Content-Type: $ct" -H "Checksum: $sha" --data-binary @"$f"
+     aws s3 cp "$f" "s3://$CDN_BUCKET/joomla/$f" --endpoint-url "$CDN_ENDPOINT" --content-type "$ct" --quiet
+   done
+   sleep 30   # geo-replication, then purge both URLs and verify by body (below)
+   ```
+   Used for 1.0.2 on 09-11-2026: Bunny answered 201 for both, and the served
+   zip's sha256 equalled the built one.
 5. Tag: `git tag -a v1.0.0 -m "Release 1.0.0" && git push origin v1.0.0`.
 6. First release only: submit to the JED.
 
