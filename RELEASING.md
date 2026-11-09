@@ -232,6 +232,17 @@ Joomla stores in `#__extensions`, and the string passed to
    zip's sha256 equalled the built one.
 5. Tag: `git tag -a v1.0.0 -m "Release 1.0.0" && git push origin v1.0.0`.
 6. First release only: submit to the JED.
+7. Every later release: update the JED listing as well (signed in to
+   extensions.joomla.org, the listing's edit form). Set **Version**,
+   **Download** and **Download URL** to the new release; both links name the
+   new zip. An edit to an approved listing goes live at once, with no review.
+   Then read the public page signed out, in a headless browser: it should show
+   the new version and link the new zip. The JED answers 200 for any path and
+   gives curl 0 bytes, so compare the page title with a made-up path's ("Pulse
+   Analytics, by Ciphera - Joomla Extension Directory" against the generic
+   "Joomla! Extensions Directory"). On 09-11-2026 the version said 1.0.2 while
+   both links still named the 1.0.1 zip, so a new install got 1.0.1 and then
+   an update prompt.
 
 ## Notes for the next person
 
