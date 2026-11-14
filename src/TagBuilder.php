@@ -20,8 +20,7 @@ namespace Joomla\Plugin\System\PulseAnalytics;
  * tag says is testable without booting Joomla, and can be read side by side with
  * the same decisions in the Drupal, Astro, Framer and Docusaurus integrations.
  *
- * The URLs, the domain grammar and the rule that the companion script is a
- * SECOND request are copied from those rather than re-derived. Two Pulse install
+ * The URL and the domain grammar are copied from those rather than re-derived. Two Pulse install
  * surfaces disagreeing about what the tag looks like is a drift bug waiting to
  * happen.
  *
@@ -35,13 +34,6 @@ final class TagBuilder
      * @since  1.0.0
      */
     public const SCRIPT_URL = 'https://js.ciphera.net/script.js';
-
-    /**
-     * The companion script: clicks, copies and form submits.
-     *
-     * @since  1.0.0
-     */
-    public const COMPANION_URL = 'https://js.ciphera.net/script.interactions.js';
 
     /**
      * Options for every asset this plugin registers.
@@ -146,20 +138,5 @@ final class TagBuilder
         }
 
         return $attributes;
-    }
-
-    /**
-     * The attributes for the companion tag.
-     *
-     * No data-domain: the tracker resolves the domain once, from the core
-     * script, and a second copy is a second thing to keep in step.
-     *
-     * @return  array  Attributes for WebAssetManager::registerAndUseScript().
-     *
-     * @since   1.0.0
-     */
-    public static function companionAttributes(): array
-    {
-        return ['defer' => true];
     }
 }

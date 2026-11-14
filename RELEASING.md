@@ -12,7 +12,7 @@ served HTML. Five cases, both supported branches:
 | **5.4.8** (older stable line) | ✅ all five |
 
 The cases: the tag with a domain and **no `?version` on the CDN url**; domain +
-API origin + companion, with the companion carrying no domain of its own; no
+API origin with a leftover `companion` value in the stored params ignored (one tag); no
 domain configured meaning auto-detect rather than an empty attribute; an invalid
 domain dropped rather than injected; and **zero** references to `ciphera` in the
 administrator.

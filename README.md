@@ -1,8 +1,8 @@
 # Pulse Analytics for Joomla
 
 This system plugin adds privacy-first analytics to a Joomla site. Pulse
-Analytics sets no cookies and never stores IP addresses, and the script the
-plugin adds to your pages is under 3 KB.
+Analytics sets no cookies and never stores IP addresses. The script the plugin
+adds to your pages is about 3 KB.
 
 [Pulse Analytics](https://pulse.ciphera.net) is built by
 [Ciphera](https://ciphera.net), a company in Belgium, and hosted in Switzerland.
@@ -30,10 +30,12 @@ hostname, which is correct for a site served on one domain.
 | Setting | Default | What it does |
 |---|---|---|
 | Domain | empty | The domain this site is registered under in Pulse. Empty means auto-detect. |
-| Record clicks, copies and form submits | off | Loads the companion script as a second, separate request (see below). |
 | Custom API origin | empty | Route events through your own proxy origin. Enter the origin only, without a path. |
 
-## Four things worth knowing
+Scroll depth, outbound links, file downloads, and clicks, copies and form submits are each switched on or off in
+your site's settings in Pulse (Settings → General). The tag stays the same, so there is nothing to change here.
+
+## Three things worth knowing
 
 **It runs on the site only and does nothing in the administrator.** The plugin
 does not subscribe to the event at all outside the site application, rather
@@ -59,10 +61,6 @@ adds `?<version>` to assets by default, and doing that to a third-party CDN URL
 would make every Joomla site request a distinct URL from ours. The plugin
 registers its assets with `version => false` to prevent it, and
 `scripts/verify.sh` asserts this against a real install.
-
-**The interaction capture is a second request on purpose.** The core script's
-size is a published claim, and nothing is folded into it to make a feature look
-free.
 
 ## A mistyped domain is dropped instead of injected
 

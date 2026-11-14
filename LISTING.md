@@ -49,11 +49,11 @@ for it.
 
 **Short description (under 200 characters):**
 
-> Pulse Analytics counts visitors without cookies or stored IP addresses. The script this plugin adds to your pages is under 3 KB.
+> Pulse Analytics counts visitors without cookies or stored IP addresses. The script this plugin adds to your pages is about 3 KB.
 
 **Description (posted on the JED 09-11-2026, with version 1.0.1):**
 
-Pulse Analytics adds privacy-first web analytics to a Joomla site with one system plugin. It sets no cookies and never stores IP addresses, so it needs no consent banner of its own. The script it adds to your pages is under 3 KB.
+Pulse Analytics adds privacy-first web analytics to a Joomla site with one system plugin. It sets no cookies and never stores IP addresses, so it needs no consent banner of its own. The script it adds to your pages is about 3 KB.
 
 How it works
 
@@ -63,11 +63,11 @@ How it works
 
 What it measures
 
-Pulse counts pageviews, referrers, countries, devices, time on page and scroll depth, plus the goals, funnels and campaigns you set up, in one dashboard hosted in Switzerland. It does not count visitors whose browser sends Do Not Track or Global Privacy Control, and the plugin never tags administration pages.
+Pulse counts pageviews, referrers, countries, devices, time on page and scroll depth, plus the goals, funnels and campaigns you set up, in one dashboard hosted in Switzerland. Whether visitors who send Do Not Track or Global Privacy Control are counted is a setting in Pulse, and the plugin never tags administration pages.
 
 Options
 
-You can add a companion script for clicks, copies and form submits. It loads as a second request, so you only pay for it if you want it. You can also set a custom API origin if you route events through your own proxy.
+Scroll depth, outbound links, file downloads, and clicks, copies and form submits are each switched on or off in your site's settings in Pulse (Settings > General). The tag stays the same, so there is nothing to change here. You can also set a custom API origin if you route events through your own proxy.
 
 You need
 
@@ -87,7 +87,7 @@ not stored twice.
 `https://pulse.ciphera.net/demo` · Support `support@ciphera.net` ·
 Source `https://github.com/ciphera-net/pulse-joomla`
 
-**Download:** `https://cdn.ciphera.net/joomla/plg_system_pulseanalytics-1.0.1.zip`
+**Download:** `https://cdn.ciphera.net/joomla/plg_system_pulseanalytics-1.1.0.zip`
 
 ## JED Checker — run, and it found a bug in JED Checker
 
