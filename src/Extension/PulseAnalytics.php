@@ -71,6 +71,9 @@ final class PulseAnalytics extends CMSPlugin implements SubscriberInterface
      * a distinct URL from our edge, and the query changes on every Joomla
      * update. Cache fragmentation, silently, per install.
      *
+     * The core script loads the interactions script by itself when the site's
+     * settings in Pulse switch it on, so this plugin registers one asset only.
+     *
      * @param   BeforeCompileHeadEvent  $event  The event object.
      *
      * @return  void
@@ -79,9 +82,7 @@ final class PulseAnalytics extends CMSPlugin implements SubscriberInterface
      */
     public function injectTag(BeforeCompileHeadEvent $event): void
     {
-        $assets = $event->getDocument()->getWebAssetManager();
-
-        $assets->registerAndUseScript(
+        $event->getDocument()->getWebAssetManager()->registerAndUseScript(
             'pulseanalytics.tracker',
             TagBuilder::SCRIPT_URL,
             TagBuilder::ASSET_OPTIONS,
@@ -89,18 +90,6 @@ final class PulseAnalytics extends CMSPlugin implements SubscriberInterface
                 (string) $this->params->get('domain', ''),
                 (string) $this->params->get('api', '')
             )
-        );
-
-        if ((int) $this->params->get('companion', 0) !== 1) {
-            return;
-        }
-
-        $assets->registerAndUseScript(
-            'pulseanalytics.companion',
-            TagBuilder::COMPANION_URL,
-            TagBuilder::ASSET_OPTIONS,
-            TagBuilder::companionAttributes(),
-            ['pulseanalytics.tracker']
         );
     }
 }

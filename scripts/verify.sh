@@ -131,22 +131,24 @@ echo "==> checking the served HTML"
 # case: it asserts NO cache-busting query on our CDN URL. It is the assertion
 # that would have caught `script.js?9b26ab`. Do not relax it.
 check "domain only, and NO ?version on the CDN url" \
-  '{"domain":"example.com","companion":"0","api":""}' \
+  '{"domain":"example.com","api":""}' \
   "<script src=\"$CORE\" defer data-domain=\"example\.com\"></script>" \
   "script\.js\?"
 
-check "domain + api + companion, companion carries no domain" \
+# A "companion" value left in the stored params by 1.0.x must be ignored: one
+# tag, no second script, no flag attributes.
+check "domain + api, a leftover companion value is ignored (one tag)" \
   '{"domain":"chosen.dev","companion":"1","api":"https://proxy.example.com/"}' \
-  "<script src=\"$CORE\" defer data-domain=\"chosen\.dev\" data-api=\"https://proxy\.example\.com\"></script> <script src=\"$COMP\" defer></script>" \
-  ""
+  "^<script src=\"$CORE\" defer data-domain=\"chosen\.dev\" data-api=\"https://proxy\.example\.com\"></script> \$" \
+  "interactions|data-no-|data-ignore-"
 
 check "no domain configured means auto-detect, not a broken attribute" \
-  '{"domain":"","companion":"0","api":""}' \
+  '{"domain":"","api":""}' \
   "^<script src=\"$CORE\" defer></script> \$" \
   "data-domain"
 
 check "an invalid domain is dropped, never injected" \
-  '{"domain":"bad\\" onload=\\"x","companion":"0","api":""}' \
+  '{"domain":"bad\\" onload=\\"x","api":""}' \
   "^<script src=\"$CORE\" defer></script> \$" \
   "onload"
 
